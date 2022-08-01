@@ -3,10 +3,11 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, View as DefaultView } from 'react-native';
+import React from 'react';
+import { Text as DefaultText, TextInput as DefaultTextInput, View as DefaultView, StyleSheet } from 'react-native';
 
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
+import Colors from '~constants/Colors';
+import useColorScheme from '~hooks/useColorScheme';
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -28,17 +29,22 @@ type ThemeProps = {
 };
 
 export type TextProps = ThemeProps & DefaultText['props'];
+export type TextInputProps = ThemeProps & DefaultTextInput['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
 
-export function Text(props: TextProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
+export const Text: React.FC<TextProps> = ({ style, lightColor, darkColor, ...otherProps }) => {
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
   return <DefaultText style={[{ color }, style]} {...otherProps} />;
 }
 
-export function View(props: ViewProps) {
-  const { style, lightColor, darkColor, ...otherProps } = props;
+export const TextInput: React.FC<TextInputProps> = ({ style, lightColor, darkColor, ...otherProps }) => {
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+
+  return <DefaultTextInput style={[{ color }, style]} {...otherProps} />;
+}
+
+export const View: React.FC<ViewProps> = ({ style, lightColor, darkColor, ...otherProps }) => {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
